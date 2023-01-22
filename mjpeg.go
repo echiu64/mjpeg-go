@@ -68,6 +68,9 @@ type AviWriter interface {
 
 	// Close finalizes and closes the avi file.
 	Close() error
+
+	// Sync flushes current contents to disk.
+	Sync() error
 }
 
 // aviWriter is the AviWriter implementation.
@@ -392,4 +395,9 @@ func (aw *aviWriter) Close() (err error) {
 	aw.finalizeLengthField() // 'RIFF' File finished (nesting level 0)
 
 	return aw.err
+}
+
+// Sync implements AviWriter.Sync().
+func (aw *aviWriter) Sync() (err error) {
+	return aw.avif.Sync()
 }
